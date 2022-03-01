@@ -41,15 +41,25 @@ function SignIn(){
       auth.signInWithPopup(provider);
   }
   return(
+    <section>
     <button onClick={signInWithGoogle}> 
     Prisijungti naudojant Gmail
     </button>
-  );
-  
-    
+    </section>
+
+  );    
+
 }
 function ChatRoom(){
+
+
+  const signOut = () => {
     
+  }
+
+    <button onClick={signOut}> 
+    Atsijungti
+    </button>
 }
 
 export default App;
