@@ -56,7 +56,7 @@ function ChatRoom(){
   const signOut = () => {
     
   }
-
+    
     <button onClick={signOut}> 
     Atsijungti
     </button>
