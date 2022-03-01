@@ -43,7 +43,7 @@ function SignIn(){
   return(
     <section>
     <button onClick={signInWithGoogle}> 
-    Prisijungti naudojant Valorant
+    Prisijungti naudojant Gmail
     </button>
     </section>
 
