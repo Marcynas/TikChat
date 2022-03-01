@@ -46,15 +46,15 @@ function SignIn(){
     Prisijungti naudojant Gmail
     </button>
     </section>
-
   );    
 
 }
 function ChatRoom(){
 
-
   const signOut = () => {
-    
+    return auth.currentUser && (
+      <button onClick={() => auth.signOut()}>Sign Out</button>
+    );
   }
     
     <button onClick={signOut}> 
