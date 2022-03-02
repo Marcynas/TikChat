@@ -43,7 +43,7 @@ function SignIn(){
   return(
     <section>
     <button onClick={signInWithGoogle}> 
-    Sign in using Gmail
+    Prisijungti naudojant Gmail
     </button>
     </section>
   );    
@@ -51,15 +51,17 @@ function SignIn(){
 }
 function ChatRoom(){
 
+ 
   const signOut = () => {
     return auth.currentUser && (
-      <button onClick={() => auth.signOut()}>Sign Out</button>
+        <button onClick={() => auth.signOut()}>Sign Out</button>
     );
   }
-    
-    <button onClick={signOut}> 
-    Atsijungti
-    </button>
+  //Sito nebus
+    return(
+      <button onClick={() => auth.signOut()}>Sign Out</button>
+    );
+  
 }
 
 export default App;
