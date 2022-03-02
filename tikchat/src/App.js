@@ -43,7 +43,7 @@ function SignIn(){
   return(
     <section>
     <button onClick={signInWithGoogle}> 
-    Prisijungti naudojant Gmail
+    Sign in using Gmail
     </button>
     </section>
   );    
