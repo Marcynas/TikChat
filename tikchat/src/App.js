@@ -3,7 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth' 
+import { useAuthState, useSignInWithGoogle, useSignInWithTwitter } from 'react-firebase-hooks/auth' 
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 firebase.initializeApp({
@@ -40,11 +40,24 @@ function SignIn(){
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider);
   }
+
+  const signInWithTwitter = () => {
+    const provider = new firebase.auth.TwitterAuthProvider();
+    auth.signInWithPopup(provider);
+  }
+
   return(
     <section>
-    <button onClick={signInWithGoogle}> 
+      <div>
+      <button onClick={signInWithGoogle}> 
     Prisijungti naudojant Gmail
     </button>
+      </div>
+    <div>
+    <button onClick={signInWithTwitter}> 
+    Prisijungti naudojant Twitter
+    </button> 
+    </div>
     </section>
   );    
 
