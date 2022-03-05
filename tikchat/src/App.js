@@ -3,8 +3,10 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-import { useAuthState, useSignInWithGoogle, useSignInWithTwitter } from 'react-firebase-hooks/auth' 
+import { signInWithPopup, TwitterAuthProvider } from "firebase/auth";
+import { useAuthState, useSignInWithGithub, useSignInWithGoogle, useSignInWithTwitter } from 'react-firebase-hooks/auth' 
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { getAuth } from 'firebase/auth';
 
 firebase.initializeApp({
   apiKey: "AIzaSyC9HQMNAOqVuh5MRKBSxYd5_nHEV21f4_Y",
@@ -30,7 +32,6 @@ function App() {
         {user ? <ChatRoom /> : <SignIn />}
       </section>
       </header>
-      
     </div>
   );
 }
@@ -41,8 +42,8 @@ function SignIn(){
       auth.signInWithPopup(provider);
   }
 
-  const signInWithTwitter = () => {
-    const provider = new firebase.auth.TwitterAuthProvider();
+  const signInWithGithub = () => {
+    const provider = new firebase.auth.GithubAuthProvider();
     auth.signInWithPopup(provider);
   }
 
@@ -54,8 +55,8 @@ function SignIn(){
     </button>
       </div>
     <div>
-    <button onClick={signInWithTwitter}> 
-    Prisijungti naudojant Twitter
+    <button onClick={signInWithGithub}> 
+    Prisijungti naudojant github
     </button> 
     </div>
     </section>
