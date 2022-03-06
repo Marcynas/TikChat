@@ -1,4 +1,5 @@
 import './App.css';
+import logo from './logo.svg';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -49,15 +50,18 @@ function SignIn(){
 
   return(
     <section>
+      <img className="App-logo" src={logo}/>
       <div>
-      <button onClick={signInWithGoogle}> 
-    Prisijungti naudojant Gmail
+        <a>Sign in with: </a>
+      <button className="Login-btn" onClick={signInWithGoogle}> 
+    Google
     </button>
+    <button className="Login-btn" onClick={signInWithGithub}> 
+    Github
+    </button> 
       </div>
     <div>
-    <button onClick={signInWithGithub}> 
-    Prisijungti naudojant github
-    </button> 
+
     </div>
     </section>
   );    
