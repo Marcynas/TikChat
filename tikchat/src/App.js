@@ -84,7 +84,7 @@ function ChatRoom(){
     <>
       <div>
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-        <button onClick={() => auth.signOut()}>Atsijungti</button>
+        <button onClick={() => auth.signOut()}>Sign Out</button>
       </div>
     </>
   )
