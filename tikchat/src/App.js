@@ -4,10 +4,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-import { signInWithPopup, TwitterAuthProvider } from "firebase/auth";
-import { useAuthState, useSignInWithGithub, useSignInWithGoogle, useSignInWithTwitter } from 'react-firebase-hooks/auth' 
+import { useAuthState } from 'react-firebase-hooks/auth' 
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { getAuth } from 'firebase/auth';
 
 firebase.initializeApp({
   apiKey: "AIzaSyC9HQMNAOqVuh5MRKBSxYd5_nHEV21f4_Y",
@@ -50,9 +48,9 @@ function SignIn(){
 
   return(
     <section>
-      <img className="App-logo" src={logo}/>
+      <img alt='' className="App-logo" src={logo}/>
       <div>
-        <a>Sign in with: </a>
+        <>Sign in with: </>
       <button className="Login-btn" onClick={signInWithGoogle}> 
     Google
     </button>
@@ -85,6 +83,9 @@ function ChatRoom(){
       <div>
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
         <button onClick={() => auth.signOut()}>Sign Out</button>
+      </div>
+      <div>
+        
       </div>
     </>
   )
