@@ -88,12 +88,6 @@ function ChatRoom(){
       </div>
     </>
   )
- 
-  //Sito nebus
-    return(
-      <button onClick={() => auth.signOut()}>Sign Out</button>
-    );
-  
 }
 
 function ChatMessage(props) {
