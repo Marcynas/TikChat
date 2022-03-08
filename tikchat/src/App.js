@@ -77,7 +77,7 @@ function ChatRoom(){
         <button onClick={() => auth.signOut()}>Sign Out</button>
     );
   }
-  //testavimas
+
   return(
     <>
       <div>
