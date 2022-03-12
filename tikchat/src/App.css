@@ -56,9 +56,9 @@ body {
 }
 
 main {
-  padding: 10px;
-  height: 80vh;
-  margin: 10vh 0 10vh;
+  padding: 0vh;
+  height: 84vh;
+  margin: 4vh 0 0vh;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -114,7 +114,8 @@ main::-webkit-scrollbar-thumb {
  }
 
 
-ul, li {
+
+ ul, li {
   text-align: left;
   list-style: none;
 }
@@ -150,6 +151,7 @@ p {
   color: black;
 }
 
+
 .Profile-img {
   width: 40px;
   height: 40px;
@@ -158,10 +160,10 @@ p {
 }
 
 form {
-  height: 10vh;
+  height: 6vh;
   position: fixed;
   bottom: 0;
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  background-color: rgb(24, 23, 23);
   width: 100%;
   display: flex;
   font-size: 1.5rem;
@@ -170,24 +172,23 @@ form {
 form button {
   background: #05728f none repeat scroll 0 0;
   border: medium none;
-  border-radius: 50%;
   color: rgb(0, 0, 0);
   cursor: pointer;
   font-size: 17px;
-  height: 33px;
-  width: 33px;
+  height: 100%;
+  width: 10%;
   position: absolute;
   right: 0;
-  margin-top: 10px;
-  
 }
 
 
 input {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: medium none;
-  color: #000000;
-  font-size: 15px;
-  min-height: 48px;
+  line-height: 1.5;
   width: 100%;
+  font-size: 1.5rem;
+  background: rgb(58, 58, 58);
+  color: white;
+  outline: none;
+  border: none;
+  padding: 0 10px;
 }

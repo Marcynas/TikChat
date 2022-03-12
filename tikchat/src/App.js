@@ -1,6 +1,6 @@
 import './App.css';
 import logo from './logo.svg';
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -81,6 +81,8 @@ function SignOut() {
 }
 function ChatRoom(){
 
+  const dummy = useRef();
+
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
 
@@ -100,26 +102,33 @@ function ChatRoom(){
       photoURL
     })
     setFormValue('');
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  return(
-    <>
-      <div>
-        {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-      </div>
-      <form onSubmit = {sendMessage}>
-        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} />
-        <button type="submit">👐</button>
-      </form>
-    </>
-  )
+  return(<>
+    <main>
+
+      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+
+      <span ref={dummy}></span>
+
+    </main>
+
+    <form onSubmit={sendMessage}>
+
+      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." />
+
+      <button type="submit" disabled={!formValue}>Send</button>
+
+    </form>
+  </>)
 }
 
 function ChatMessage(props) {
   const { text, uid, photoURL } = props.message;
 
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved';
-  
+  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+
   return (
       <div className={`message ${messageClass}`}>
         <img className='Profile-img' src={photoURL}/>
