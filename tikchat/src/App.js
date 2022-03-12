@@ -1,5 +1,6 @@
 import './App.css';
 import logo from './logo.svg';
+import React, { useEffect, useState } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -21,16 +22,23 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 function App() {
-
   const[user] = useAuthState(auth);
 
   return (
     <div className="App">
       <header className="App-header">
+        <div>
+        <>
+        {user ? 'Chat room' : 'Sign in'}
+        </>
+        <>  </>
+        <SignOut />
+        </div>
+        </header>
       <section>
         {user ? <ChatRoom /> : <SignIn />}
       </section>
-      </header>
+      
     </div>
   );
 }
@@ -40,6 +48,7 @@ function SignIn(){
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider);
   }
+
 
   const signInWithGithub = () => {
     const provider = new firebase.auth.GithubAuthProvider();
@@ -63,7 +72,12 @@ function SignIn(){
     </div>
     </section>
   );    
+}
 
+function SignOut() {
+  return auth.currentUser && (
+    <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
+  )
 }
 function ChatRoom(){
 
@@ -72,29 +86,46 @@ function ChatRoom(){
 
   const [messages] = useCollectionData(query, {idField: 'id'});
 
-  const signOut = () => {
-    return auth.currentUser && (
-        <button onClick={() => auth.signOut()}>Sign Out</button>
-    );
+  const [formValue,setFormValue] = useState('');
+
+  const sendMessage = async(e) =>{
+    e.preventDefault();
+
+    const { uid,photoURL} = auth.currentUser;
+
+    await messagesRef.add({
+      text: formValue,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid,
+      photoURL
+    })
+    setFormValue('');
   }
 
   return(
     <>
       <div>
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-        <button onClick={() => auth.signOut()}>Sign Out</button>
       </div>
-      <div>
-        
-      </div>
+      <form onSubmit = {sendMessage}>
+        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} />
+        <button type="submit">👐</button>
+      </form>
     </>
   )
 }
 
 function ChatMessage(props) {
-  const { text, uid } = props.message;
+  const { text, uid, photoURL } = props.message;
+
+  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved';
   
-  return <p>{text}</p>
+  return (
+      <div className={`message ${messageClass}`}>
+        <img className='Profile-img' src={photoURL}/>
+        <p>{text}</p>
+      </div>
+  )
 }
 
 export default App;

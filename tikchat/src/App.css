@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  margin: 0 auto;
+}
+
+body {
+  background-color: #f185da;
 }
 
 .App-logo {
@@ -12,18 +17,6 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
-.App-header {
-  background-color: #9a5ead;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -32,6 +25,58 @@
     transform: rotate(360deg);
   }
 }
+
+.App-header {
+  background-color: #181717;
+  height: 10vh;
+  min-height: 50px;
+  color: white;
+  display: flex;
+  width: 100%;
+  top: 0;
+
+  z-index: 99;
+  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(2vh);
+
+  position: fixed;
+  box-sizing: border-box;
+  
+}
+
+.App section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f185da;
+}
+
+main {
+  padding: 10px;
+  height: 80vh;
+  margin: 10vh 0 10vh;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+main::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+main::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+main::-webkit-scrollbar-thumb {
+  background: #6649b8;
+}
+
+
 
 .Login-btn {
   width: 130px;
@@ -67,3 +112,82 @@
   0 8px 0 -4px #39a2db,
   0 12px 10px -3px #39a2db;
  }
+
+
+ul, li {
+  text-align: left;
+  list-style: none;
+}
+
+p {
+  max-width: 500px;
+  margin-bottom: 12px;
+  line-height: 24px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  position: relative;
+  color: white;
+  text-align: center;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+}
+
+
+.sent {
+  flex-direction: row-reverse;
+}
+
+.sent p {
+  color: white;
+  background: #0b93f6;
+  align-self: flex-end;
+}
+.received p {
+  background: #e5e5ea;
+  color: black;
+}
+
+.Profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 2px 5px;
+}
+
+form {
+  height: 10vh;
+  position: fixed;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  width: 100%;
+  display: flex;
+  font-size: 1.5rem;
+}
+
+form button {
+  background: #05728f none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  width: 33px;
+  position: absolute;
+  right: 0;
+  margin-top: 10px;
+  
+}
+
+
+input {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #000000;
+  font-size: 15px;
+  min-height: 48px;
+  width: 100%;
+}
