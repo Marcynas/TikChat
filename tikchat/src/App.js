@@ -118,7 +118,7 @@ function ChatRoom() {
       {!hidden ? <div className='column-firends'><Friends/></div> : null}
       <div className='column-chat'>
         <main>
-          <button onClick={() => setHidden(s => !s)}>Firends</button>
+          <button onClick={() => setHidden(s => !s)}>Friends</button>
           {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
           <span ref={dummy}></span>
 
