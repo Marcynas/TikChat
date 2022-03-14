@@ -1,18 +1,20 @@
+html * {
+  font-family: Sans-serif !important;
+}
 .App {
   text-align: center;
   margin: 0 auto;
 }
-
 body {
   background-color: #f185da;
+  text-align: center;
 }
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-
 .App-header {
+  font-size: auto;
   background-color: #181717;
   height: 10vh;
   min-height: 50px;
@@ -20,19 +22,14 @@ body {
   display: flex;
   width: 100%;
   top: 0;
-
   z-index: 99;
   padding: 10px;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(2vh);
-
   position: fixed;
   box-sizing: border-box;
-  
+  text-align: center;
 }
-
 .App section {
   display: flex;
   flex-direction: column;
@@ -40,8 +37,7 @@ body {
   min-height: 100vh;
   background-color: #f185da;
 }
-
-main {
+.main-chat {
   padding: 0vh;
   height: 84vh;
   margin: 4vh 0 0vh;
@@ -49,21 +45,15 @@ main {
   display: flex;
   flex-direction: column;
 }
-
-main::-webkit-scrollbar {
+.main-chat::-webkit-scrollbar {
   width: 0.25rem;
 }
-
-main::-webkit-scrollbar-track {
+.main-chat::-webkit-scrollbar-track {
   background: #1e1e24;
 }
-
-main::-webkit-scrollbar-thumb {
+.main-chat::-webkit-scrollbar-thumb {
   background: #6649b8;
 }
-
-
-
 .Login-btn {
   width: 130px;
   height: 40px;
@@ -75,37 +65,81 @@ main::-webkit-scrollbar-thumb {
   border-radius: 5px;
   transition: all .4s;
   margin: 10px;
-  user-select: none; /* supported by Chrome and Opera */
-   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-   -moz-user-select: none; /* Firefox */
-   -ms-user-select: none; /* Internet Explorer/Edge */
- }
-
- 
- .Login-btn:hover {
+  user-select: none;
+ /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+ /* Safari */
+  -khtml-user-select: none;
+ /* Konqueror HTML */
+  -moz-user-select: none;
+ /* Firefox */
+  -ms-user-select: none;
+ /* Internet Explorer/Edge */
+}
+.Login-btn:hover {
   border-radius: 5px;
   transform: translateY(-10px);
-  box-shadow: 0 7px 0 -2px #f85959,
-  0 15px 0 -4px #39a2db,
-  0 16px 10px -3px #39a2db;
- }
- 
- .Login-btn:active {
+  box-shadow: 0 7px 0 -2px #f85959, 0 15px 0 -4px #39a2db, 0 16px 10px -3px #39a2db;
+}
+.Login-btn:active {
   transition: all 0.2s;
   transform: translateY(-5px);
-  box-shadow: 0 2px 0 -2px #f85959,
-  0 8px 0 -4px #39a2db,
-  0 12px 10px -3px #39a2db;
- }
-
-
-
- ul, li {
+  box-shadow: 0 2px 0 -2px #f85959, 0 8px 0 -4px #39a2db, 0 12px 10px -3px #39a2db;
+}
+.Hbtn {
+  font-size: large;
+  cursor: pointer;
+  outline: 0;
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  user-select: none;
+ /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+ /* Safari */
+  -khtml-user-select: none;
+ /* Konqueror HTML */
+  -moz-user-select: none;
+ /* Firefox */
+  -ms-user-select: none;
+ /* Internet Explorer/Edge */
+}
+.Hbtn:hover {
+  color: #fff;
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+.Hbtn:disabled {
+  color: #fff;
+  background-color: #124696;
+  border-color: #0a58ca;
+}
+.fr{
+  margin-right: 3em;
+}
+.out{
+  margin-left: 3em;
+}
+svg {
+  height: 1em;
+  width: 1em;
+  top: .125em;
+  position: relative;
+  display: inline-flex;
+  align-self: center;
+}
+ul, li {
   text-align: left;
   list-style: none;
 }
-
 p {
   max-width: 500px;
   margin-bottom: 12px;
@@ -116,17 +150,16 @@ p {
   color: white;
   text-align: center;
 }
-
+.messageBox{
+  padding: 2vh;
+}
 .message {
   display: flex;
   align-items: center;
 }
-
-
 .sent {
   flex-direction: row-reverse;
 }
-
 .sent p {
   color: white;
   background: #0b93f6;
@@ -136,15 +169,12 @@ p {
   background: #e5e5ea;
   color: black;
 }
-
-
 .Profile-img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin: 2px 5px;
 }
-
 form {
   height: 6vh;
   position: fixed;
@@ -154,20 +184,12 @@ form {
   display: flex;
   font-size: 1.5rem;
 }
-
 form button {
-  background: #05728f none repeat scroll 0 0;
-  border: medium none;
-  color: rgb(0, 0, 0);
-  cursor: pointer;
-  font-size: 17px;
   height: 100%;
   width: 10%;
   position: absolute;
   right: 0;
 }
-
-
 input {
   line-height: 1.5;
   width: 100%;
@@ -178,40 +200,16 @@ input {
   border: none;
   padding: 0 10px;
 }
-
-.row {
-  display: flex;
-}
-
-.column-firends {
-  flex: 50%;
-}
-.column-chat {
-  flex: 100%;
-}
-
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-  .column-firends {
-    animation: slide 0.5s linear;
-  }
+      animation: App-logo-spin infinite 20s linear;
+    }
 }
 @keyframes App-logo-spin {
   from {
-    transform: rotate(0deg);
-  }
+      transform: rotate(0deg);
+    }
   to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes slide {
-  from {
-    flex: 0%;
-  }
-  to {
-    flex: 50%;
-  }  
+      transform: rotate(360deg);
+    }
 }

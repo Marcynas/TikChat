@@ -4,10 +4,12 @@ import React, { useRef, useEffect, useState } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import * as Icon from 'react-bootstrap-icons';
 
+
+//---------------------------------
 firebase.initializeApp({
   apiKey: "AIzaSyC9HQMNAOqVuh5MRKBSxYd5_nHEV21f4_Y",
   authDomain: "tikchatweb.firebaseapp.com",
@@ -17,89 +19,79 @@ firebase.initializeApp({
   appId: "1:691401485298:web:ed0959edd71842fd80996b",
   measurementId: "G-Y3B85QNHE9"
 })
-
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+//---------------------------------
 
+//Pagrindine funkcija
 function App() {
+  //pasiima vartotojo duomenis
   const [user] = useAuthState(auth);
+  const [isFriendsHidden, setFriendsHidden] = useState(true);
 
   return (
     <div className="App">
       <header className="App-header">
         <div>
-          <>
-            {user ? 'Chat room' : 'Sign in'}
-          </>
-          <>  </>
+          {auth.currentUser && (<button className='Hbtn fr' onClick={() => setFriendsHidden(s => !s)}>Friends <Icon.PeopleFill/></button>)}
+          {user ? !isFriendsHidden ? ' Friends ' : ' Chat room ' : ' Sign in '}
           <SignOut />
-
         </div>
       </header>
       <section>
-        {user ? <ChatRoom /> : <SignIn />}
+        {user ? !isFriendsHidden ? <Friends />  : <ChatRoom /> : <SignIn />}
       </section>
-
     </div>
   );
 }
-function SignIn() {
 
+//Prisijungimo langas
+function SignIn() {
+  //Skirtingi prisijungimo budai
+  //---------------------------------
+  //Prisijungimas su Google
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
   }
-
-
+  //Prisijungimas su Github
   const signInWithGithub = () => {
     const provider = new firebase.auth.GithubAuthProvider();
     auth.signInWithPopup(provider);
   }
+  //---------------------------------
 
+  //Grazina logotipa ir du mygtukus prisijungimui
   return (
     <section>
-      <img alt='' className="App-logo" src={logo} />
-      <div>
-        <>Sign in with: </>
-        <button className="Login-btn" onClick={signInWithGoogle}>
-          Google
-        </button>
-        <button className="Login-btn" onClick={signInWithGithub}>
-          Github
-        </button>
-      </div>
-      <div>
 
+      <img alt='' className="App-logo" src={logo} />
+      <>Sign in using</>
+      <div>
+        <button className="Login-btn" onClick={signInWithGoogle}>Google <Icon.Google/></button>
+        <button className="Login-btn" onClick={signInWithGithub}>Github <Icon.Github/></button>
       </div>
     </section>
   );
 }
 
+//Atsijungimo mygtukas
 function SignOut() {
   return auth.currentUser && (
-    <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
+    <button className='Hbtn out' onClick={() => auth.signOut()}>Sign Out <Icon.BoxArrowRight/></button>
   )
 }
 
-
-
+//Pokalbiu langas
 function ChatRoom() {
-
   const dummy = useRef();
-
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt');
-
   const [messages] = useCollectionData(query, { idField: 'id' });
-
   const [formValue, setFormValue] = useState('');
-
-  const [hidden, setHidden] = useState(true);
-
 
   const sendMessage = async (e) => {
     e.preventDefault();
-
     const { uid, photoURL, displayName } = auth.currentUser;
 
     await messagesRef.add({
@@ -114,50 +106,47 @@ function ChatRoom() {
   }
 
   return (<>
-    <div className='row'>
-      {!hidden ? <div className='column-firends'><Friends/></div> : null}
-      <div className='column-chat'>
-        <main>
-          <button onClick={() => setHidden(s => !s)}>Friends</button>
+    <div>
+      <div>
+        <main className='main-chat'>
           {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
           <span ref={dummy}></span>
-
         </main>
-
         <form onSubmit={sendMessage}>
-
           <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required maxlength="59" />
-
-          <button type="submit" disabled={!formValue}>Send</button>
-        </form></div>
-
+          <button className='Hbtn' type="submit" disabled={!formValue}><Icon.Send/></button>
+        </form>
+      </div>
     </div>
-
   </>)
 }
 
-function Friends(){
-  return(
+//Draugu langas
+function Friends() {
+  return (
     <>
-    <main>
-      Draugai
-    </main>
+      <main>
+        Draugai
+      </main>
     </>
   )
 }
 
+//Zinutes burbuliukas
 function ChatMessage(props) {
   const { text, uid, photoURL, displayName } = props.message;
-
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
-  return (
-
+  return (<div className='messageBox'>
+    <a className={`message ${messageClass}`}>{displayName ? displayName : "GithubUser"}</a>
     <div className={`message ${messageClass}`}>
-      {displayName}
-      <img className='Profile-img' src={photoURL} />
+      <img className='Profile-img name' src={
+        photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
       <p>{text}</p>
     </div>
+  </div>
+
+
   )
 }
 
