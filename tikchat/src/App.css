@@ -12,20 +12,6 @@ body {
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .App-header {
   background-color: #181717;
   height: 10vh;
@@ -191,4 +177,41 @@ input {
   outline: none;
   border: none;
   padding: 0 10px;
+}
+
+.row {
+  display: flex;
+}
+
+.column-firends {
+  flex: 50%;
+}
+.column-chat {
+  flex: 100%;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+  .column-firends {
+    animation: slide 0.5s linear;
+  }
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes slide {
+  from {
+    flex: 0%;
+  }
+  to {
+    flex: 50%;
+  }  
 }

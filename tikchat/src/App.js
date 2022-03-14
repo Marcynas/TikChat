@@ -5,7 +5,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-import { useAuthState } from 'react-firebase-hooks/auth' 
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 firebase.initializeApp({
@@ -22,31 +22,32 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 function App() {
-  const[user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   return (
     <div className="App">
       <header className="App-header">
         <div>
-        <>
-        {user ? 'Chat room' : 'Sign in'}
-        </>
-        <>  </>
-        <SignOut />
+          <>
+            {user ? 'Chat room' : 'Sign in'}
+          </>
+          <>  </>
+          <SignOut />
+
         </div>
-        </header>
+      </header>
       <section>
         {user ? <ChatRoom /> : <SignIn />}
       </section>
-      
+
     </div>
   );
 }
-function SignIn(){
+function SignIn() {
 
   const signInWithGoogle = () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
   }
 
 
@@ -55,23 +56,23 @@ function SignIn(){
     auth.signInWithPopup(provider);
   }
 
-  return(
+  return (
     <section>
-      <img alt='' className="App-logo" src={logo}/>
+      <img alt='' className="App-logo" src={logo} />
       <div>
         <>Sign in with: </>
-      <button className="Login-btn" onClick={signInWithGoogle}> 
-    Google
-    </button>
-    <button className="Login-btn" onClick={signInWithGithub}> 
-    Github
-    </button> 
+        <button className="Login-btn" onClick={signInWithGoogle}>
+          Google
+        </button>
+        <button className="Login-btn" onClick={signInWithGithub}>
+          Github
+        </button>
       </div>
-    <div>
+      <div>
 
-    </div>
+      </div>
     </section>
-  );    
+  );
 }
 
 function SignOut() {
@@ -79,21 +80,27 @@ function SignOut() {
     <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
   )
 }
-function ChatRoom(){
+
+
+
+function ChatRoom() {
 
   const dummy = useRef();
 
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
 
-  const [messages] = useCollectionData(query, {idField: 'id'});
+  const [messages] = useCollectionData(query, { idField: 'id' });
 
-  const [formValue,setFormValue] = useState('');
+  const [formValue, setFormValue] = useState('');
 
-  const sendMessage = async(e) =>{
+  const [hidden, setHidden] = useState(true);
+
+
+  const sendMessage = async (e) => {
     e.preventDefault();
 
-    const {uid,photoURL,displayName} = auth.currentUser;
+    const { uid, photoURL, displayName } = auth.currentUser;
 
     await messagesRef.add({
       text: formValue,
@@ -106,36 +113,51 @@ function ChatRoom(){
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  return(<>
-    <main>
-      {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+  return (<>
+    <div className='row'>
+      {!hidden ? <div className='column-firends'><Friends/></div> : null}
+      <div className='column-chat'>
+        <main>
+          <button onClick={() => setHidden(s => !s)}>Firends</button>
+          {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+          <span ref={dummy}></span>
 
-      <span ref={dummy}></span>
+        </main>
 
-    </main>
+        <form onSubmit={sendMessage}>
 
-    <form onSubmit={sendMessage}>
+          <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." />
 
-      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." />
+          <button type="submit" disabled={!formValue}>Send</button>
+        </form></div>
 
-      <button type="submit" disabled={!formValue}>Send</button>
+    </div>
 
-    </form>
   </>)
 }
 
+function Friends(){
+  return(
+    <>
+    <main>
+      Draugai
+    </main>
+    </>
+  )
+}
+
 function ChatMessage(props) {
-  const { text, uid, photoURL,displayName } = props.message;
+  const { text, uid, photoURL, displayName } = props.message;
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
   return (
-    
-      <div className={`message ${messageClass}`}>
-          {displayName}
-          <img className='Profile-img' src={photoURL}/>
-        <p>{text}</p>
-      </div>
+
+    <div className={`message ${messageClass}`}>
+      {displayName}
+      <img className='Profile-img' src={photoURL} />
+      <p>{text}</p>
+    </div>
   )
 }
 
