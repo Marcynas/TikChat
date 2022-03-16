@@ -114,12 +114,13 @@ function ChatRoom() {
         </main>
         <form onSubmit={sendMessage}>
           <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required maxlength="59" />
-          <button className='Hbtn' type="submit" disabled={!formValue}><Icon.Send/></button>
+          <button className='Hbtn snd' type="submit" disabled={!formValue}><Icon.Send/></button>
         </form>
       </div>
     </div>
   </>)
 }
+
 
 //Draugu langas
 function Friends() {
