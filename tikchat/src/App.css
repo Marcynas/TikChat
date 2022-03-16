@@ -59,6 +59,7 @@ body {
   box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
   transition: all 250ms;
   overflow: hidden;
+  user-select: none;
   /* supported by Chrome and Opera */
   -webkit-user-select: none;
  /* Safari */
