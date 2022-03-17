@@ -14,6 +14,7 @@ body {
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  user-select: none;
 }
 .App-header {
   font-size: auto;
@@ -210,7 +211,7 @@ input {
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-      animation: App-logo-spin infinite 1s linear;
+      animation: App-logo-spin infinite 20s linear;
     }
 }
 @keyframes App-logo-spin {
