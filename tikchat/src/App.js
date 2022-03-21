@@ -122,6 +122,7 @@ function ChatRoom() {
 }
 
 
+
 //Draugu langas
 function Friends() {
   return (
