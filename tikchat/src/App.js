@@ -80,7 +80,7 @@ function SignIn() {
       <div>
         <button className="Login-btn" onClick={signInWithGoogle}>Google <Icon.Google /></button>
         <button className="Login-btn" onClick={signInWithGithub}>Github <Icon.Github /></button>
-        <button className="Login-btn" onClick={signInAnonymous}>Anonymous <Icon.PersonBadgeFill /></button>
+        <button className="Login-btn" onClick={signInAnonymous}>Anonymous <Icon.PersonFill /></button>
       </div>
     </section>
   );
