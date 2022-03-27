@@ -1,5 +1,6 @@
 import './App.css';
 import logo from './logo.svg';
+import Linkify from 'react-linkify';
 import React, { useRef, useEffect, useState } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -66,6 +67,9 @@ function SignIn() {
     auth.signInWithPopup(provider);
 
   }
+  const signInAnonymous = () => {
+    auth.signInAnonymously();
+  }
   //---------------------------------
   //Grazina logotipa ir du mygtukus prisijungimui
   return (
@@ -76,6 +80,7 @@ function SignIn() {
       <div>
         <button className="Login-btn" onClick={signInWithGoogle}>Google <Icon.Google /></button>
         <button className="Login-btn" onClick={signInWithGithub}>Github <Icon.Github /></button>
+        <button className="Login-btn" onClick={signInAnonymous}>Anonymous <Icon.Person /></button>
       </div>
     </section>
   );
@@ -108,6 +113,7 @@ function ChatRoom() {
   const [formValue, setFormValue] = useState('');
 
   writeUserData(auth.currentUser.uid, auth.currentUser.displayName, auth.currentUser.email, auth.currentUser.photoURL);
+
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -146,11 +152,11 @@ function ChatMessage(props) {
   const { text, uid, photoURL, displayName } = props.message;
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
   return (<div className='messageBox'>
-    <a className={`message ${messageClass}`}>{displayName ? displayName : "GithubUser"}</a>
+    <a className={`message ${messageClass}`}>{displayName ? displayName : "UserWithoutName"}</a>
     <div className={`message ${messageClass}`}>
       <img onClick={() => AddFriend(auth.currentUser.uid, uid)} className='Profile-img name' src={
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
-      <p>{text}</p>
+      <p><Linkify properties={{ target: '_blank', style: { color: 'blue' } }}>{text}</Linkify></p>
     </div>
   </div>
   )
