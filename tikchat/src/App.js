@@ -206,11 +206,18 @@ function FriendBox(props) {
 
 //Prideti drauga
 const AddFriend = (userId, uid, displayName,photoURL) => {
-  const friendsRef = firestore.collection('friends' + userId).doc(uid);
-  friendsRef.set({
+  const friendsRefSau = firestore.collection('friends' + userId).doc(uid);
+  const friendsRefKitam = firestore.collection('friends' + uid).doc(userId);
+  friendsRefSau.set({
     uid,
     displayName,
     photoURL,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  })
+  friendsRefKitam.set({
+    uid: auth.currentUser.uid,
+    displayName: auth.currentUser.displayName,
+    photoURL:auth.currentUser.photoURL,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   })
 }
