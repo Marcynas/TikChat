@@ -216,6 +216,7 @@ p {
   align-self: center;
   vertical-align: top;
   width: 50%;
+  z-index: 100;
 }
 
 @media (prefers-reduced-motion: no-preference) {
