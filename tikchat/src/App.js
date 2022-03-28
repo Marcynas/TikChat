@@ -8,8 +8,8 @@ import 'firebase/compat/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import * as Icon from 'react-bootstrap-icons';
-import { getDatabase, ref, push, set, child, get } from "firebase/database";
-import { Reddit } from 'react-bootstrap-icons';
+
+
 
 
 
@@ -26,15 +26,16 @@ firebase.initializeApp({
 })
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-const db = getDatabase();
+var firebaseui = require('firebaseui');
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
 //---------------------------------
 
+var isEmLogin = false;
 //Pagrindine funkcija
 function App() {
   //pasiima vartotojo duomenis
   const [user] = useAuthState(auth);
   const [isFriendsHidden, setFriendsHidden] = useState(true);
-
   return (
     <div className="App">
       <header className="App-header">
@@ -45,12 +46,20 @@ function App() {
         </div>
       </header>
       <section>
-        {user ? !isFriendsHidden ? <Friends /> : <ChatRoom /> : <SignIn />}
+      {
+        user ? !isFriendsHidden ? <Friends /> : <ChatRoom /> : <SignIn />
+        }
       </section>
     </div>
+    
   );
 }
 
+function LoginForm(){
+  return(
+    <section id="firebaseui-auth-container"> </section>
+    );
+}
 
 //Prisijungimo langas
 function SignIn() {
@@ -70,6 +79,21 @@ function SignIn() {
   const signInAnonymous = () => {
     auth.signInAnonymously();
   }
+
+  var size = "small";
+  const signInWithEmail = () => {
+    ui.start('#firebaseui-auth-container', {
+      signInOptions: [
+        {
+          signInFlow: 'popup',
+          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          requireDisplayName: true,
+        }
+      ]
+    });
+    size = "big";
+  }
+  
   //---------------------------------
   //Grazina logotipa ir du mygtukus prisijungimui
   return (
@@ -80,11 +104,16 @@ function SignIn() {
       <div>
         <button className="Login-btn" onClick={signInWithGoogle}>Google <Icon.Google /></button>
         <button className="Login-btn" onClick={signInWithGithub}>Github <Icon.Github /></button>
-        <button className="Login-btn" onClick={signInAnonymous}>Anonymous <Icon.PersonFill /></button>
       </div>
-    </section>
+      <div>
+        <button className="Login-btn" onClick={signInAnonymous}>Guest <Icon.PersonFill /></button>
+        <button className="Login-btn" onClick={signInWithEmail}>Email <Icon.FilePostFill /></button>
+      </div>
+      <div id="firebaseui-auth-container"></div>
+   </section >
   );
 }
+
 function writeUserData(userId, name, email, photoURL) {
   const usersRef = firestore.collection('users').doc(userId);
   usersRef.set({
@@ -138,9 +167,9 @@ function ChatRoom() {
           {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
           <span ref={dummy}></span>
         </main>
-        <form onSubmit={sendMessage}>
-          <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required maxlength="59" />
-          <button className='Hbtn snd' type="submit" disabled={!formValue}><Icon.Send /></button>
+        <form className='formMSG' onSubmit={sendMessage}>
+          <input className='formMSGinput' value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required maxlength="59" />
+          <button className='Hbtn snd formMSGbutton' type="submit" disabled={!formValue}><Icon.Send /></button>
         </form>
       </div>
     </div>
@@ -208,27 +237,6 @@ const getData = async (userIdFR) =>{
 }
 
 
-
-
-// usersRef.withConverter(userConverter).get().then((doc) => {
-//   if (doc.exists){
-//     // Convert to City object
-//     var city = doc.data();
-//     // Use a City instance method
-//     return (<div className='messageBox'>
-//     <a>{userIdFR}</a>
-//   </div>
-//   )
-//   } else {
-//     console.log("No such document!");
-//   }}).catch((error) => {
-//     console.log("Error getting document:", error);
-//   });
-
-
-
-
-
 const AddFriend = (userId, userIdFR) => {
   const friendsRef = firestore.collection('friends' + userId).doc(userIdFR);
   friendsRef.set({
@@ -236,37 +244,5 @@ const AddFriend = (userId, userIdFR) => {
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   })
 }
-
-
-
-// class User {
-//   constructor (userId, name, email, photoURL) {
-//       this.userId = userId;
-//       this.name = name;
-//       this.email = email;
-//       this.photoURL = photoURL;
-//   }
-//   getName(){
-//     return this.name;
-//   }
-// }
-
-// // Firestore data converter
-// var userConverter = {
-//   toFirestore: function(user) {
-//       return {
-//           userId: user.userId,
-//           name: user.name,
-//           email:user.email,
-//           photoURL: user.photoURL
-
-//           };
-//   },
-//   fromFirestore: function(snapshot, options){
-//       const data = snapshot.data(options);
-//       return new User(data.userId, data.name, data.email, data.photoURL);
-//   }
-// };
-
 
 export default App;

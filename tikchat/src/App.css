@@ -187,7 +187,7 @@ p {
   border-radius: 50%;
   margin: 2px 5px;
 }
-form {
+.formMSG {
   height: 40px;
   position: fixed;
   bottom: 10px;
@@ -196,11 +196,11 @@ form {
   font-size: 1.5rem;
   padding-left: 5%;
 }
-form button {
+.formMSGbutton {
   position: absolute;
   right: 0;
 }
-input {
+.formMSGinput {
   line-height: 1.5;
   width: 100%;
   font-size: 1.5rem;
@@ -209,11 +209,21 @@ input {
   border-radius: 100px;
   padding: 0 10px;
 }
+
+#firebaseui-auth-container{
+  position:absolute;
+  background-color:#ffffff6c;
+  align-self: center;
+  vertical-align: top;
+  width: 50%;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
       animation: App-logo-spin infinite 20s linear;
     }
 }
+
 @keyframes App-logo-spin {
   from {
       transform: rotate(0deg);
@@ -221,4 +231,16 @@ input {
   to {
       transform: rotate(360deg);
     }
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
