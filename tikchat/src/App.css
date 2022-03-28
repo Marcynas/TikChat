@@ -210,10 +210,6 @@ p {
   padding: 0 10px;
 }
 
-#firebaseui-auth-container{
-
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
       animation: App-logo-spin infinite 20s linear;
