@@ -1,7 +1,7 @@
 import './App.css';
 import logo from './logo.svg';
 import Linkify from 'react-linkify';
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -9,11 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import * as Icon from 'react-bootstrap-icons';
 
-
-
-
-
-//---------------------------------
+//-----------------------------------------------------------------
 firebase.initializeApp({
   apiKey: "AIzaSyC9HQMNAOqVuh5MRKBSxYd5_nHEV21f4_Y",
   authDomain: "tikchatweb.firebaseapp.com",
@@ -24,13 +20,14 @@ firebase.initializeApp({
   measurementId: "G-Y3B85QNHE9",
   databaseURL: "https://tikchatweb-default-rtdb.europe-west1.firebasedatabase.app/"
 })
+//-----------------------------------------------------------------
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 var firebaseui = require('firebaseui');
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
-//---------------------------------
+var pokalbis = "messages";
+//-----------------------------------------------------------------
 
-var isEmLogin = false;
 //Pagrindine funkcija
 function App() {
   //pasiima vartotojo duomenis
@@ -46,21 +43,14 @@ function App() {
         </div>
       </header>
       <section>
-      {
-        user ? !isFriendsHidden ? <Friends /> : <ChatRoom /> : <SignIn />
-        }
+        {user ? !isFriendsHidden ? <Friends /> : <ChatRoom /> : <SignIn />}
       </section>
     </div>
-    
   );
 }
 
-function LoginForm(){
-  return(
-    <section id="firebaseui-auth-container"> </section>
-    );
-}
 
+//-----------------------------------------------------------------------PRISIJUNGIMAS
 //Prisijungimo langas
 function SignIn() {
   //Skirtingi prisijungimo budai
@@ -74,13 +64,12 @@ function SignIn() {
   const signInWithGithub = () => {
     const provider = new firebase.auth.GithubAuthProvider();
     auth.signInWithPopup(provider);
-
   }
+  //Prisijungimas kaip sveciui
   const signInAnonymous = () => {
     auth.signInAnonymously();
   }
-
-  var size = "small";
+  //Prisijungimas su Email
   const signInWithEmail = () => {
     ui.start('#firebaseui-auth-container', {
       signInOptions: [
@@ -91,11 +80,9 @@ function SignIn() {
         }
       ]
     });
-    size = "big";
   }
-  
-  //---------------------------------
-  //Grazina logotipa ir du mygtukus prisijungimui
+  //-----------------------------------------------------------------
+  //Grazina logotipa, emailform ir mygtukus prisijungimui
   return (
     <section>
 
@@ -110,10 +97,12 @@ function SignIn() {
         <button className="Login-btn" onClick={signInWithEmail}>Email <Icon.EnvelopeFill /></button>
       </div>
       <div id="firebaseui-auth-container"></div>
-   </section >
+      
+    </section >
   );
 }
 
+//Prisijungus naudotojo duomenys surasomi i database
 function writeUserData(userId, name, email, photoURL) {
   const usersRef = firestore.collection('users').doc(userId);
   usersRef.set({
@@ -125,29 +114,26 @@ function writeUserData(userId, name, email, photoURL) {
   })
 }
 
-
 //Atsijungimo mygtukas
 function SignOut() {
   return auth.currentUser && (
     <button className='Hbtn out' onClick={() => auth.signOut()}>Sign Out <Icon.BoxArrowRight /></button>
   )
 }
-
+//-----------------------------------------------------------------------SUSIRASINEJIMAS
 //Pokalbiu langas
 function ChatRoom() {
   const dummy = useRef();
-  const messagesRef = firestore.collection('messages');
+  const messagesRef = firestore.collection(pokalbis);
   const query = messagesRef.orderBy('createdAt');
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
 
   writeUserData(auth.currentUser.uid, auth.currentUser.displayName, auth.currentUser.email, auth.currentUser.photoURL);
 
-
   const sendMessage = async (e) => {
     e.preventDefault();
     const { uid, photoURL, displayName } = auth.currentUser;
-
     await messagesRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -158,7 +144,6 @@ function ChatRoom() {
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
-
 
   return (<>
     <div>
@@ -183,14 +168,14 @@ function ChatMessage(props) {
   return (<div className='messageBox'>
     <a className={`message ${messageClass}`}>{displayName ? displayName : "UserWithoutName"}</a>
     <div className={`message ${messageClass}`}>
-      <img onClick={() => AddFriend(auth.currentUser.uid, uid)} className='Profile-img name' src={
+      <img onClick={() => AddFriend(auth.currentUser.uid, uid, displayName,photoURL)} className='Profile-img name' src={
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
       <p><Linkify properties={{ target: '_blank', style: { color: 'blue' } }}>{text}</Linkify></p>
     </div>
   </div>
   )
 }
-
+//-----------------------------------------------------------------------DRAUGAI
 //Draugu langas
 function Friends() {
   const friendsRef = firestore.collection('friends' + auth.currentUser.uid);
@@ -199,50 +184,45 @@ function Friends() {
   return (<>
     <div>
       <div>
-      <main>
-          {friends && friends.map(fr => <FriendLine key={fr.id} friend={fr} />)}
+        <main className='FriendBoxBox'>
+        <div className='FriendBox' onClick={() => pokalbis="messages" }>Public</div>
+        {friends && friends.map(fr => <FriendBox key={fr.id} friend={fr} />)}
         </main>
       </div>
     </div>
   </>)
 }
 
-function FriendLine(props) {
-  const { userIdFR } = props.friend;
-
-  console.log(  getData(userIdFR).then((name)=>{
-    return name
-  }
-  ))
-  return (<div className='messageBox'>
-  <main>
-  {userIdFR}
-  </main>
-</div>
-);
-};
-
-const getData = async (userIdFR) =>{
-  try{
-  return  await (firestore.collection('users').doc(userIdFR).get()).then((a) =>{
-    a.then((doc) => {
-      return doc.data().name
-    }
-    )
-  })
-  }
-  catch(err){
-    return "name";
-  }
+function FriendBox(props) {
+  const { uid, displayName ,photoURL } = props.friend;
+  return (
+    <div className='FriendBox' onClick={() => PakeistiPokalbi(uid)}>
+    <img className='Profile-img name' src={
+        photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
+        <a>{displayName ? displayName : "UserWithoutName"}</a>
+    </div>
+  )
 }
 
-
-const AddFriend = (userId, userIdFR) => {
-  const friendsRef = firestore.collection('friends' + userId).doc(userIdFR);
+//Prideti drauga
+const AddFriend = (userId, uid, displayName,photoURL) => {
+  const friendsRef = firestore.collection('friends' + userId).doc(uid);
   friendsRef.set({
-    userIdFR,
+    uid,
+    displayName,
+    photoURL,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   })
+}
+
+function PakeistiPokalbi(draugoId){
+  if (draugoId.localeCompare(auth.currentUser.uid)>0){
+    pokalbis = auth.currentUser.uid+"messages"+draugoId;
+  }
+  else{
+    pokalbis = draugoId+"messages"+auth.currentUser.uid;
+  }  
+
 }
 
 export default App;

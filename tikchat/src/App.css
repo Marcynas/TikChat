@@ -211,12 +211,7 @@ p {
 }
 
 #firebaseui-auth-container{
-  position:absolute;
-  background-color:#b1b1b1;
-  align-self: center;
-  vertical-align: top;
-  width: 50%;
-  z-index: 100;
+
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -245,3 +240,29 @@ p {
   display: table;
   clear: both;
 }
+
+.FriendBoxBox{
+  width: 20%;
+  padding-left: 40%;
+  position: relative;
+  align-content: center;
+  align-self: center;
+}
+.FriendBox {
+  width: 200px;
+  height: 50px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255, 255, 255);
+  border-radius: 0.4em;
+  box-shadow: 0.3em 0.3em 0.7em #00000015;
+  transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: rgb(250, 250, 250) 0.2em solid;
+  cursor: pointer;
+ }
+ 
+ .FriendBox:hover {
+  border: #006fff 0.2em solid;
+ }
