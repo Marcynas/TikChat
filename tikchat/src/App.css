@@ -238,11 +238,12 @@ p {
 }
 
 .FriendBoxBox{
-  width: 20%;
-  padding-left: 40%;
-  position: relative;
-  align-content: center;
-  align-self: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  padding-top: -10vh;
+  margin-top: -200px;
+  margin-left: -110px;
 }
 .FriendBox {
   width: 200px;
@@ -257,6 +258,16 @@ p {
   transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: rgb(250, 250, 250) 0.2em solid;
   cursor: pointer;
+  user-select: none;
+   /* supported by Chrome and Opera */
+   -webkit-user-select: none;
+   /* Safari */
+    -khtml-user-select: none;
+   /* Konqueror HTML */
+    -moz-user-select: none;
+   /* Firefox */
+    -ms-user-select: none;
+   /* Internet Explorer/Edge */
  }
  
  .FriendBox:hover {
