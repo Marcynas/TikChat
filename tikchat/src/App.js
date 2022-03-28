@@ -9,6 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import * as Icon from 'react-bootstrap-icons';
 import { updateCurrentUser, updateProfile } from 'firebase/auth';
+import { onSnapshot } from 'firebase/firestore';
 
 //-----------------------------------------------------------------
 firebase.initializeApp({
@@ -127,6 +128,9 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection(pokalbis);
+  onSnapshot(messagesRef,()=>{
+    dummy.current.scrollIntoView({ behavior: 'smooth' })
+  })
   const query = messagesRef.orderBy('createdAt');
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
