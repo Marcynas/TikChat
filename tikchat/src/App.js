@@ -107,7 +107,7 @@ function SignIn() {
       </div>
       <div>
         <button className="Login-btn" onClick={signInAnonymous}>Guest <Icon.PersonFill /></button>
-        <button className="Login-btn" onClick={signInWithEmail}>Email <Icon.FilePostFill /></button>
+        <button className="Login-btn" onClick={signInWithEmail}>Email <Icon.EnvelopeFill /></button>
       </div>
       <div id="firebaseui-auth-container"></div>
    </section >
