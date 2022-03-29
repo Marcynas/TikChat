@@ -9,7 +9,6 @@ body {
   background-color: #6EBF8B;
   text-align: center;
   max-width: 100%;
-  overflow-x: hidden;
 }
 .App-logo {
   height: 40vmin;
@@ -46,6 +45,7 @@ body {
   margin-bottom: 40px;
 }
 .Login-btn {
+  width: 130px;
   margin: 10px;
   padding: 15px 25px;
   border: unset;
@@ -91,6 +91,7 @@ body {
 .Login-btn:hover::before {
   width: 100%;
 }
+
 .Hbtn {
   font-size: 1em;
   cursor: pointer;
@@ -153,7 +154,6 @@ ul, li {
   list-style: none;
 }
 p {
-  max-width: 500px;
   margin-bottom: 12px;
   line-height: 24px;
   padding: 10px 20px;
@@ -161,6 +161,7 @@ p {
   position: relative;
   color: white;
   text-align: center;
+  text-overflow: ellipsis;
 }
 .messageBox{
   padding: 2vh;
@@ -168,6 +169,7 @@ p {
 .message {
   display: flex;
   align-items: center;
+
 }
 .sent {
   flex-direction: row-reverse;
@@ -176,6 +178,7 @@ p {
   color: white;
   background: #0b93f6;
   align-self: flex-end;
+  
 }
 .received p {
   background: #e5e5ea;
@@ -185,8 +188,15 @@ p {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  border-color: #181717;
+  border-width: 2px;
+  border-style: solid;
   margin: 2px 5px;
 }
+.myFriend{
+  border-color: gold;
+}
+
 .formMSG {
   height: 40px;
   position: fixed;
@@ -260,7 +270,7 @@ p {
   cursor: pointer;
   user-select: none;
    /* supported by Chrome and Opera */
-   -webkit-user-select: none;
+  -webkit-user-select: none;
    /* Safari */
     -khtml-user-select: none;
    /* Konqueror HTML */
@@ -268,8 +278,68 @@ p {
    /* Firefox */
     -ms-user-select: none;
    /* Internet Explorer/Edge */
- }
+}
  
- .FriendBox:hover {
+.FriendBox:hover {
   border: #006fff 0.2em solid;
- }
+}
+
+.hiddentrue{
+  visibility: hidden;
+  height: 0px;
+  animation: dissappear 1s ease-in-out;
+}
+.hiddenfalse{
+  position: absolute;
+  margin: 10apx;
+  padding: 5px;
+  border: #e5e5ea;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: #ffffff91;
+  visibility: visible;
+  width: 80%;
+  align-self: center;
+  top: 15%;
+  z-index: 100;
+  animation: appear 0.5s ease-in-out;
+}
+
+@keyframes appear {
+  from {
+      transform:scale(0);
+    }
+  to {
+      transform:scale(1);
+    }
+}
+#firebaseui-aut-container{
+  margin-top: 5px;
+}
+#firebaseui-auth-container button{
+  margin: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  outline: 0;
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  user-select: none;
+ /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+ /* Safari */
+  -khtml-user-select: none;
+ /* Konqueror HTML */
+  -moz-user-select: none;
+ /* Firefox */
+  -ms-user-select: none;
+ /* Internet Explorer/Edge */
+}
