@@ -15,8 +15,20 @@ body {
   pointer-events: none;
   user-select: none;
 }
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+}
+@keyframes App-logo-spin {
+  from {
+      transform: rotate(0deg);
+    }
+  to {
+      transform: rotate(360deg);
+    }
+}
 .App-header {
-  font-size: auto;
   background-color: #181717;
   height: 10vh;
   min-height: 50px;
@@ -44,6 +56,7 @@ body {
   margin: 10vh 0 7vh;
   margin-bottom: 40px;
 }
+/* ButtonsLogin */
 .Login-btn {
   width: 130px;
   margin: 10px;
@@ -91,8 +104,9 @@ body {
 .Login-btn:hover::before {
   width: 100%;
 }
-
+/* ButtonsTop */
 .Hbtn {
+  width: 110px;
   font-size: 1em;
   cursor: pointer;
   outline: 0;
@@ -134,13 +148,8 @@ body {
 .out{
   margin-left: 2vw;
 }
-.snd{
-  border-radius: 50%;
-  font-size: 1px;
-  display: inline-flex;
-  height: 40px;
-  width: 40px;
-}
+
+/* Message */
 svg {
   height: 100%;
   width: auto;
@@ -184,6 +193,16 @@ p {
   background: #e5e5ea;
   color: black;
 }
+.Profile-imgFR{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-color: #181717;
+  border-width: 2px;
+  border-style: solid;
+  margin: 2px 5px;
+}
+
 .Profile-img {
   width: 40px;
   height: 40px;
@@ -193,60 +212,51 @@ p {
   border-style: solid;
   margin: 2px 5px;
 }
+.Profile-img:hover{
+  transform: scale(1.1)
+}
 .myFriend{
   border-color: gold;
 }
+.myFriend:hover{
+  transform: scale(1.1)
+}
 
-.formMSG {
+/* MessageForm */
+.snd{
+  border-radius: 50%;
+  font-size: 1px;
+  display: inline-flex;
   height: 40px;
-  position: fixed;
-  bottom: 10px;
-  width: 90%;
+  width: 40px;
+  border: white;
+  border-style: solid;
+}
+.formMSG {
   display: flex;
+  position: fixed;
+  height: 40px;
+  bottom: 10px;
   font-size: 1.5rem;
-  padding-left: 5%;
+  width: 100%;
 }
 .formMSGbutton {
-  position: absolute;
-  right: 0;
+  margin-left: 5px;
+  margin-right: 10px;
 }
 .formMSGinput {
   line-height: 1.5;
-  width: 100%;
+  width: 95%;
   font-size: 1.5rem;
   background: rgb(58, 58, 58);
   color: white;
+  border: white;
+  border-style: solid;
   border-radius: 100px;
   padding: 0 10px;
+  margin-left: 10px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-@keyframes App-logo-spin {
-  from {
-      transform: rotate(0deg);
-    }
-  to {
-      transform: rotate(360deg);
-    }
-}
-
-.column {
-  float: left;
-  width: 50%;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
+/* FriendList */
 .FriendBoxBox{
   position: fixed;
   top: 50%;
@@ -283,15 +293,13 @@ p {
 .FriendBox:hover {
   border: #006fff 0.2em solid;
 }
-
+/* LoginForm */
 .hiddentrue{
   visibility: hidden;
   height: 0px;
-  animation: dissappear 1s ease-in-out;
 }
 .hiddenfalse{
   position: absolute;
-  margin: 10apx;
   padding: 5px;
   border: #e5e5ea;
   border-style: solid;
