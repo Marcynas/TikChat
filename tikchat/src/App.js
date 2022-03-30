@@ -31,22 +31,42 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var pokalbis = "messages";
 //-----------------------------------------------------------------
 
-//Pagrindine funkcija
+//-----------------------------------------------------------------------PAGRINDINEFUNKCIJA
 function App() {
   //pasiima vartotojo duomenis
   const [user] = useAuthState(auth);
-  const [isFriendsHidden, setFriendsHidden] = useState(true);
+  const [screen, setScreen] = useState('ChatRoom');
+  const handleClick = (screenState) => {
+    setScreen(screenState)} //pakeicia ekrana
+  
   return (
     <div className="App">
       <header className="App-header">
-        <div>
-          {auth.currentUser && (<button className='Hbtn fr' onClick={() => setFriendsHidden(s => !s)}>Friends <Icon.PeopleFill /></button>)}
-          {user ? !isFriendsHidden ? ' Friends ' : ' Chat room ' : ' Sign in '}
+        <div> 
+          {user ? (() => {
+        switch (screen) {
+          case 'ChatRoom':
+            return <><button className='Hbtn fr' onClick={() => {handleClick('Friends')}}>Friends <Icon.PeopleFill /></button>   Chat room </>;
+          case 'Friends':
+            return <><button className='Hbtn fr' onClick={() => {handleClick('ChatRoom')}}>Back <Icon.ArrowReturnLeft /></button>   Friends </>
+          default: 
+            return null
+        }
+      })() : '  Sign in  '}
           <SignOut />
         </div>
       </header>
       <section>
-        {user ? !isFriendsHidden ? <Friends state={setFriendsHidden}/> : <ChatRoom /> : <SignIn />}
+        {user ? (() => {
+        switch (screen) {
+          case 'ChatRoom':
+            return <ChatRoom handleClick={handleClick} />
+          case 'Friends':
+            return <Friends handleClick={handleClick} />
+          default:
+            return null
+        }
+      })() : <SignIn />}
       </section>
     </div>
   );
@@ -152,9 +172,13 @@ function ChatRoom() {
     <div>
       <div>
         <main className='main-chat'>
+          <br/>
+          <b><Icon.ChatSquareDots size={160}/></b><br/>
+          <b>Say hello! 👋</b>
           {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
           <span ref={dummy}></span>
         </main>
+
         <form className='formMSG' onSubmit={sendMessage}>
           <input className='formMSGinput' value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required maxLength="59" />
           <button className='Hbtn snd formMSGbutton' type="submit" disabled={!formValue}><Icon.Send /></button>
@@ -177,19 +201,19 @@ function ChatMessage(props) {
     });
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
-  return (<div className='messageBox'>
+  return (<li className='messageBox'>
     <b className={`message ${messageClass}`}>{displayName ? displayName : "UserWithoutName"}</b>
     <div className={`message ${messageClass}`}>
       <img alt=':(' onClick={() => AddFriend(auth.currentUser.uid, uid, displayName,photoURL) & setFriend('myFriend') } className={`Profile-img ${isFriends} name`} src={
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
       <p><Linkify properties={{ target: '_blank', style: { color: 'blue' } }}>{text}</Linkify></p>
     </div>
-  </div>
+  </li>
   )
 }
 //-----------------------------------------------------------------------DRAUGAI
 //Draugu langas
-function Friends() {
+function Friends(props) {
   const friendsRef = firestore.collection('friends' + auth.currentUser.uid);
   const query = friendsRef.orderBy('createdAt');
   const [friends] = useCollectionData(query, { idField: 'id' });
@@ -197,19 +221,20 @@ function Friends() {
     <div>
       <div>
         <main className='FriendBoxBox'>
-        <b className='FriendBox' onClick={() => pokalbis="messages" }>Public</b>
-        {friends && friends.map(fr => <FriendBox key={fr.id} friend={fr} />)}
+        <b className='FriendBox' onClick={() => {pokalbis="messages"; props.handleClick('ChatRoom')} }>Public</b>
+        {friends && friends.map(fr => <FriendBox key={fr.id} friend={fr} handleClick={props.handleClick} />)}
         </main>
       </div>
     </div>
   </>)
 }
 
+//Draugo burbuliukas
 function FriendBox(props) {
   const { uid, displayName ,photoURL } = props.friend;
   return (
-    <div className='FriendBox' onClick={() => PakeistiPokalbi(uid)}>
-    <img alt=':(' className='Profile-img name' src={
+    <div className='FriendBox' onClick={() => {PakeistiPokalbi(uid); props.handleClick('ChatRoom')}}>
+    <img alt=':(' className='Profile-imgFR name' src={
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
         <b>{displayName ? displayName : "UserWithoutName"}</b>
     </div>
@@ -234,6 +259,7 @@ const AddFriend = (userId, uid, displayName,photoURL) => {
   })
 }
 
+//Pakeisti pokalbi
 function PakeistiPokalbi(draugoId){
   if (draugoId.localeCompare(auth.currentUser.uid)>0){
     pokalbis = auth.currentUser.uid+"messages"+draugoId;
