@@ -267,6 +267,5 @@ function PakeistiPokalbi(draugoId){
   else{
     pokalbis = draugoId+"messages"+auth.currentUser.uid;
   }
-  
 }
 export default App;
