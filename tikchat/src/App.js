@@ -2,7 +2,7 @@ import './App.css';
 import {makePhoto,generateName} from './generator.js';
 import logo from './logo.svg';
 import Linkify from 'react-linkify';
-import React, { useRef, useState, Component } from "react";
+import React, { useRef, useState } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -187,26 +187,6 @@ function ChatRoom() {
       </div>
     </div>
   </>)
-}
-
-class FileUploadButton extends Component {
-  handleFileUpload = event => {
-    console.log(event.target.files[0].name);
-  };
-  render() {
-    return (
-      <React.Fragment>
-        <input
-          ref="fileInput"
-          onChange={this.handleFileUpload}
-          type="file"
-          style={{ display: "none" }}
-          // multiple={false}
-        />
-        <button onClick={() => this.refs.fileInput.click()}>Upload File</button>
-      </React.Fragment>
-    );
-  }
 }
 
 //Zinutes burbuliukas
