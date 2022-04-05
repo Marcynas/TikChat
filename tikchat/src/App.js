@@ -212,6 +212,7 @@ function ChatMessage(props) {
   </li>
   )
 }
+
 //-----------------------------------------------------------------------DRAUGAI
 //Draugu langas
 function Friends(props) {
@@ -234,12 +235,26 @@ function Friends(props) {
 function FriendBox(props) {
   const { uid, displayName ,photoURL } = props.friend;
   return (
-    <div className='FriendBox' onClick={() => {PakeistiPokalbi(uid); props.handleClick('ChatRoom')}}>
+    <div>
+          <div className='FriendBox' onClick={() => {PakeistiPokalbi(uid); props.handleClick('ChatRoom')}}>
     <img alt=':(' className='Profile-imgFR name' src={
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
         <b>{displayName ? displayName : "UserWithoutName"}</b>
     </div>
+
+    <button className='rmvFriend' onClick={() => {RemoveFriend(props.friend)}}>X</button>
+    </div>
+
+    
   )
+}
+
+//Pašalinti drauga
+const RemoveFriend = (friend) => {
+  const friendsRefSau = firestore.collection('friends' + auth.currentUser.uid).doc(friend.uid);
+  const friendsRefKitam = firestore.collection('friends' + friend.uid).doc(auth.currentUser.uid);
+  friendsRefSau.delete();
+  friendsRefKitam.delete();
 }
 
 //Prideti drauga
@@ -269,4 +284,6 @@ function PakeistiPokalbi(draugoId){
     pokalbis = draugoId+"messages"+auth.currentUser.uid;
   }
 }
+
+
 export default App;

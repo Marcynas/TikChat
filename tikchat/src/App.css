@@ -351,3 +351,12 @@ p {
   -ms-user-select: none;
  /* Internet Explorer/Edge */
 }
+
+.rmvFriend{
+  cursor: pointer;
+  border: none;
+  border-radius: 100px;
+  align-self: center;
+  justify-self: flex-end;
+  margin-left: 50px;
+}
