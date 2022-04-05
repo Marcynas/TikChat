@@ -182,7 +182,6 @@ function ChatRoom() {
         <form className='formMSG' onSubmit={sendMessage}>
           <input className='formMSGinput' value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required  />
           <button className='Hbtn snd formMSGbutton' type="submit" disabled={!formValue}><Icon.Send /></button>
-          <FileUploadButton/>
         </form>
         
       </div>
