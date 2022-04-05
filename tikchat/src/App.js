@@ -11,17 +11,18 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import * as Icon from 'react-bootstrap-icons';
 import { updateProfile } from 'firebase/auth';
 import { onSnapshot } from 'firebase/firestore';
+import 'firebase/compat/storage'; 
 
 //-----------------------------------------------------------------
 firebase.initializeApp({
   apiKey: "AIzaSyC9HQMNAOqVuh5MRKBSxYd5_nHEV21f4_Y",
   authDomain: "tikchatweb.firebaseapp.com",
+  storageBucket: 'gs://tikchatweb.appspot.com/',
   projectId: "tikchatweb",
-  storageBucket: "tikchatweb.appspot.com",
   messagingSenderId: "691401485298",
   appId: "1:691401485298:web:ed0959edd71842fd80996b",
   measurementId: "G-Y3B85QNHE9",
-  databaseURL: "https://tikchatweb-default-rtdb.europe-west1.firebasedatabase.app/"
+  databaseURL: "https://tikchatweb-default-rtdb.europe-west1.firebasedatabase.app/",
 })
 //-----------------------------------------------------------------
 const auth = firebase.auth();
@@ -29,6 +30,7 @@ const firestore = firebase.firestore();
 var firebaseui = require('firebaseui');
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var pokalbis = "messages";
+var storage = firebase.storage();
 //-----------------------------------------------------------------
 
 //-----------------------------------------------------------------------PAGRINDINEFUNKCIJA
@@ -168,6 +170,27 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
+  //upload image
+  const uploadImage = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = storage.ref(`images/${file.name}`);
+    const task = storageRef.put(file);
+    await task.then(() => {
+      storageRef.getDownloadURL().then(url => {
+        const { uid, photoURL, displayName } = auth.currentUser;
+        messagesRef.add({
+          text: url,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          displayName,
+          uid,
+          photoURL
+        })
+        setFormValue('');
+        dummy.current.scrollIntoView({ behavior: 'smooth' });
+      })
+    })
+  }
+
   return (<>
     <div>
       <div>
@@ -180,8 +203,10 @@ function ChatRoom() {
         </main>
 
         <form className='formMSG' onSubmit={sendMessage}>
-          <input className='formMSGinput' value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required maxLength="59" />
+          <input className='formMSGinput' value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required />
           <button className='Hbtn snd formMSGbutton' type="submit" disabled={!formValue}><Icon.Send /></button>
+          <input type="file" id="upload" hidden onChange={uploadImage} />
+          <label className='Hbtn upl formMSGbutton' for="upload"><Icon.Upload /></label>
         </form>
         
       </div>
@@ -203,7 +228,7 @@ function ChatMessage(props) {
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
   return (<li className='messageBox'>
-    <b className={`message ${messageClass}`}>{displayName ? displayName : "UserWithoutName"}</b>
+    <b className={`message ${messageClass} wrap`}>{displayName ? displayName : "UserWithoutName"}</b>
     <div className={`message ${messageClass}`}>
       <img alt=':(' onClick={() => AddFriend(auth.currentUser.uid, uid, displayName,photoURL) & setFriend('myFriend') } className={`Profile-img ${isFriends} name`} src={
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
@@ -284,6 +309,7 @@ function PakeistiPokalbi(draugoId){
     pokalbis = draugoId+"messages"+auth.currentUser.uid;
   }
 }
+
 
 
 export default App;

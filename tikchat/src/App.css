@@ -4,6 +4,7 @@ html * {
 .App {
   text-align: center;
   margin: 0 auto;
+  overflow:hidden;
 }
 body {
   background-color: #6EBF8B;
@@ -49,6 +50,7 @@ body {
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
+  width: 100vw;
   background-color: #6EBF8B;
 }
 .main-chat {
@@ -178,7 +180,8 @@ p {
 .message {
   display: flex;
   align-items: center;
-
+  overflow:hidden;
+  overflow-wrap: anywhere;
 }
 .sent {
   flex-direction: row-reverse;
@@ -232,6 +235,21 @@ p {
   border: white;
   border-style: solid;
 }
+.upl{
+  border-radius: 50%;
+  font-size: 1px;
+  display: inline-flex;
+  height: 25px;
+  width: 15px;
+  border: white;
+  border-style: solid;
+}
+
+label{
+  display: flex;
+  width: 0px;
+}
+
 .formMSG {
   display: flex;
   position: fixed;
@@ -359,4 +377,13 @@ p {
   align-self: center;
   justify-self: flex-end;
   margin-left: 50px;
+}
+
+.wrap { 
+  white-space: pre-wrap;      /* CSS3 */   
+  white-space: -moz-pre-wrap; /* Firefox */    
+  white-space: -pre-wrap;     /* Opera <7 */   
+  white-space: -o-pre-wrap;   /* Opera 7 */    
+  word-wrap: break-word;      /* IE */
+  overflow-wrap: break-word;
 }
