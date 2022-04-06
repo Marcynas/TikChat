@@ -10,7 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import * as Icon from 'react-bootstrap-icons';
 import { updateProfile } from 'firebase/auth';
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot, enableIndexedDbPersistence } from 'firebase/firestore';
 import 'firebase/compat/storage'; 
 
 //-----------------------------------------------------------------
@@ -24,6 +24,7 @@ firebase.initializeApp({
   measurementId: "G-Y3B85QNHE9",
   databaseURL: "https://tikchatweb-default-rtdb.europe-west1.firebasedatabase.app/",
 })
+
 //-----------------------------------------------------------------
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -31,6 +32,22 @@ var firebaseui = require('firebaseui');
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var pokalbis = "messages";
 var storage = firebase.storage();
+
+
+enableIndexedDbPersistence(firestore)
+  .catch((err) => {
+      if (err.code === 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+      } else if (err.code === 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+      }
+  });
+// Subsequent queries will use persistence, if it was enabled successfully
+
 //-----------------------------------------------------------------
 
 //-----------------------------------------------------------------------PAGRINDINEFUNKCIJA
