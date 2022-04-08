@@ -183,6 +183,11 @@ p {
   overflow:hidden;
   overflow-wrap: anywhere;
 }
+.message-img{
+  width: 50vw;
+  height: auto;
+}
+
 .sent {
   flex-direction: row-reverse;
 }

@@ -110,7 +110,6 @@ function SignIn() {
   //Prisijungimas kaip sveciui
   const signInAnonymous = () => {
     auth.signInAnonymously();
-    
   }
   //Prisijungimas su Email
   const signInWithEmail = () => {
@@ -163,7 +162,6 @@ function ChatRoom() {
   const query = messagesRef.orderBy('createdAt');
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
-
   if (auth.currentUser.photoURL == null)
   updateProfile(auth.currentUser, {
     photoURL: makePhoto(10)
@@ -186,6 +184,8 @@ function ChatRoom() {
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
+
+
 
   //upload image
   const uploadImage = async (e) => {
@@ -215,15 +215,16 @@ function ChatRoom() {
           <br/>
           <b><Icon.ChatSquareDots size={160}/></b><br/>
           <b>Say hello! 👋</b>
-          {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+          {messages && messages.map(msg => <ChatMessage message={msg} key={msg.id} />)}
           <span ref={dummy}></span>
         </main>
+
 
         <form className='formMSG' onSubmit={sendMessage}>
           <input className='formMSGinput' value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required />
           <button className='Hbtn snd formMSGbutton' type="submit" disabled={!formValue}><Icon.Send /></button>
-          <input type="file" id="upload" hidden onChange={uploadImage} />
-          <label className='Hbtn upl formMSGbutton' for="upload"><Icon.Upload /></label>
+          <input type="file" accept="image/*" id="upload" hidden onChange={uploadImage} />
+          <label className='Hbtn upl formMSGbutton' htmlFor="upload"><Icon.Upload /></label>
         </form>
         
       </div>
@@ -249,7 +250,10 @@ function ChatMessage(props) {
     <div className={`message ${messageClass}`}>
       <img alt=':(' onClick={() => AddFriend(auth.currentUser.uid, uid, displayName,photoURL) & setFriend('myFriend') } className={`Profile-img ${isFriends} name`} src={
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
-      <p><Linkify properties={{ target: '_blank', style: { color: 'blue' } }}>{text}</Linkify></p>
+      <p>
+        {text.includes('/images%') ? <img alt=':(' className='message-img' src={text} /> : <Linkify properties={{ target: '_blank', style: { color: 'blue' } }}>{text}</Linkify>}
+      </p>
+
     </div>
   </li>
   )
@@ -283,7 +287,6 @@ function FriendBox(props) {
         photoURL ? photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
         <b>{displayName ? displayName : "UserWithoutName"}</b>
     </div>
-
     <button className='rmvFriend' onClick={() => {RemoveFriend(props.friend)}}>X</button>
     </div>
 
@@ -326,6 +329,7 @@ function PakeistiPokalbi(draugoId){
     pokalbis = draugoId+"messages"+auth.currentUser.uid;
   }
 }
+
 
 
 
