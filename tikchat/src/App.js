@@ -2,7 +2,7 @@ import './App.css';
 import { makePhoto, generateName } from './generator.js';
 import logo from './logo.svg';
 import Linkify from 'react-linkify';
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -10,7 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import * as Icon from 'react-bootstrap-icons';
 import { updateProfile } from 'firebase/auth';
-import { onSnapshot, enableIndexedDbPersistence } from 'firebase/firestore';
+import { enableIndexedDbPersistence } from 'firebase/firestore';
 import 'firebase/compat/storage';
 
 //-----------------------------------------------------------------
@@ -154,9 +154,6 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection(pokalbis);
-  onSnapshot(messagesRef, () => {
-    dummy.current.scrollIntoView({ behavior: 'smooth' })
-  })
   const query = messagesRef.orderBy('createdAt');
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
@@ -168,7 +165,9 @@ function ChatRoom() {
     updateProfile(auth.currentUser, {
       displayName: generateName()
     });
-
+  useEffect(() => {
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
   const sendMessage = async (e) => {
     e.preventDefault();
     const { uid, photoURL, displayName } = auth.currentUser;
@@ -180,7 +179,6 @@ function ChatRoom() {
       photoURL
     })
     setFormValue('');
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   //upload image
@@ -203,7 +201,6 @@ function ChatRoom() {
       })
     })
   }
-
   return (<>
     <div>
       <div>
