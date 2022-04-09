@@ -184,7 +184,7 @@ p {
   overflow-wrap: anywhere;
 }
 .message-img{
-  width: 50vw;
+  width: 40vw;
   height: auto;
 }
 
@@ -289,7 +289,7 @@ label{
   margin-left: -110px;
 }
 .FriendBox {
-  width: 200px;
+  width: 215px;
   height: 50px;
   margin-top: 5px;
   display: flex;
@@ -312,7 +312,13 @@ label{
     -ms-user-select: none;
    /* Internet Explorer/Edge */
 }
- 
+.FriendBox div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .FriendBox:hover {
   border: #006fff 0.2em solid;
 }
@@ -376,12 +382,21 @@ label{
 }
 
 .rmvFriend{
+  display: inline-flex;
   cursor: pointer;
   border: none;
   border-radius: 100px;
   align-self: center;
-  justify-self: flex-end;
-  margin-left: 50px;
+  background-color: red;
+  width: 25px;
+  height: 25px;
+  margin-left: 30px;
+  font-size: 0;
+  justify-content: center;
+  align-items: center;
+}
+.rmvFriend:hover{
+  background-color: #ff000091;
 }
 
 .wrap { 
