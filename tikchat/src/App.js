@@ -33,6 +33,8 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var pokalbis = "messages";
 var storage = firebase.storage();
 
+var Filter = require('bad-words'), filter = new Filter();
+
 
 enableIndexedDbPersistence(firestore)
   .catch((err) => {
@@ -154,7 +156,7 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection(pokalbis);
-  const query = messagesRef.orderBy('createdAt');
+  const query = messagesRef.orderBy('createdAt').limitToLast(2);
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
   if (auth.currentUser.photoURL == null)
@@ -171,8 +173,11 @@ function ChatRoom() {
   const sendMessage = async (e) => {
     e.preventDefault();
     const { uid, photoURL, displayName } = auth.currentUser;
+
+    const formValueClean = filter.clean(formValue);
+    
     await messagesRef.add({
-      text: formValue,
+      text: formValueClean,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       displayName,
       uid,
@@ -325,6 +330,7 @@ function PakeistiPokalbi(draugoId) {
     pokalbis = draugoId + "messages" + auth.currentUser.uid;
   }
 }
+
 
 
 export default App;
