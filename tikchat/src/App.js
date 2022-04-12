@@ -167,15 +167,13 @@ function ChatRoom() {
     updateProfile(auth.currentUser, {
       displayName: generateName()
     });
-  useEffect(() => {
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+
+  //send message
   const sendMessage = async (e) => {
     e.preventDefault();
     const { uid, photoURL, displayName } = auth.currentUser;
-
     const formValueClean = filter.clean(formValue);
-
+    setFormValue('');
     await messagesRef.add({
       text: formValueClean,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -183,7 +181,6 @@ function ChatRoom() {
       uid,
       photoURL
     })
-    setFormValue('');
   }
 
   //upload image
@@ -206,6 +203,12 @@ function ChatRoom() {
       })
     })
   }
+
+
+  useEffect(() => {
+    dummy.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+  
   return (<>
     <div>
       <div>
