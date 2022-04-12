@@ -156,7 +156,7 @@ function SignOut() {
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection(pokalbis);
-  const query = messagesRef.orderBy('createdAt').limitToLast(2);
+  const query = messagesRef.orderBy('createdAt');
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
   if (auth.currentUser.photoURL == null)
@@ -175,7 +175,7 @@ function ChatRoom() {
     const { uid, photoURL, displayName } = auth.currentUser;
 
     const formValueClean = filter.clean(formValue);
-    
+
     await messagesRef.add({
       text: formValueClean,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
