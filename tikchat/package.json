@@ -16,6 +16,7 @@
     "react-bootstrap-validation": "^0.1.11",
     "react-dom": "^17.0.2",
     "react-firebase-hooks": "^5.0.3",
+    "react-input-emoji": "^4.1.0",
     "react-linkify": "^1.0.0-alpha",
     "react-scripts": "5.0.0",
     "web-vitals": "^2.1.4"

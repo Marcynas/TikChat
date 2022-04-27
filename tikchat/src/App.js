@@ -12,6 +12,7 @@ import * as Icon from 'react-bootstrap-icons';
 import { updateProfile } from 'firebase/auth';
 import { enableIndexedDbPersistence } from 'firebase/firestore';
 import 'firebase/compat/storage';
+import InputEmoji from "react-input-emoji";
 
 //-----------------------------------------------------------------
 firebase.initializeApp({
@@ -33,7 +34,7 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var pokalbis = "messages";
 var storage = firebase.storage();
 
-var Filter = require('bad-words'), filter = new Filter();
+// var Filter = require('bad-words'), filter = new Filter();
 
 
 enableIndexedDbPersistence(firestore)
@@ -68,9 +69,13 @@ function App() {
           {user ? (() => {
             switch (screen) {
               case 'ChatRoom':
-                return <><button className='Hbtn fr' onClick={() => { handleClick('Friends') }}>Friends <Icon.PeopleFill /></button>   Chat room </>;
+                return <><button className='Hbtn fr' onClick={() => { handleClick('Friends') }}>Friends <Icon.PeopleFill /></button>   Chat room
+                  <button className='ProfileEdditButton' onClick={() => { handleClick('EditProfile') }} ><Icon.PersonBadgeFill /></button> </>;
               case 'Friends':
-                return <><button className='Hbtn fr' onClick={() => { handleClick('ChatRoom') }}>Back <Icon.ArrowReturnLeft /></button>   Friends </>
+                return <><button className='Hbtn fr' onClick={() => { handleClick('ChatRoom') }}>Back <Icon.ArrowReturnLeft /></button>   Friends
+                  <button className='ProfileEdditButton' onClick={() => { handleClick('EditProfile') }} ><Icon.PersonBadgeFill /></button> </>
+              case 'EditProfile':
+                return <><button className='Hbtn fr' onClick={() => { handleClick('ChatRoom') }}>Back <Icon.ArrowReturnLeft /></button>   Edit profile </>
               default:
                 return null
             }
@@ -78,14 +83,15 @@ function App() {
           <SignOut />
         </div>
       </header>
-      <section>
-          {user && (
-            <>
-              {screen === 'ChatRoom' && <ChatRoom handleClick={handleClick} />}
-              {screen === 'Friends' && <Friends handleClick={handleClick} />}
-            </>
-          )}
-          {!user && <SignIn />}
+      <section className='Appsection'>
+        {user && (
+          <>
+            {screen === 'ChatRoom' && <ChatRoom handleClick={handleClick} />}
+            {screen === 'Friends' && <Friends handleClick={handleClick} />}
+            {screen === 'EditProfile' && <ProfileEdit handleClick={handleClick} />}
+          </>
+        )}
+        {!user && <SignIn />}
       </section>
     </div>
   );
@@ -127,7 +133,7 @@ function SignIn() {
   //-----------------------------------------------------------------
   //Grazina logotipa, emailform ir mygtukus prisijungimui
   return (
-    <section>
+    <section className='Appsection'>
       <img alt='' className="App-logo" src={logo} />
       <>Sign in using</>
       <div className={`hidden${isSignInHidden}`} id="firebaseui-auth-container"></div>
@@ -158,7 +164,6 @@ function ChatRoom() {
   const messagesRef = firestore.collection(pokalbis);
   const query = messagesRef.orderBy('createdAt');
   const [messages] = useCollectionData(query, { idField: 'id' });
-  const [formValue, setFormValue] = useState('');
   if (auth.currentUser.photoURL == null)
     updateProfile(auth.currentUser, {
       photoURL: makePhoto(10)
@@ -170,12 +175,18 @@ function ChatRoom() {
 
   //send message
   const sendMessage = async (e) => {
-    e.preventDefault();
+
     const { uid, photoURL, displayName } = auth.currentUser;
-    const formValueClean = filter.clean(formValue);
-    setFormValue('');
+    var message = e;
+    //if message is only spaces
+    if (message.trim() === '') return;
+    if (message === 0) return;
+    //if message is null
+    if (message === null) return;
+
+    console.log(message);
     await messagesRef.add({
-      text: formValueClean,
+      text: message,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       displayName,
       uid,
@@ -198,17 +209,17 @@ function ChatRoom() {
           uid,
           photoURL
         })
-        setFormValue('');
         dummy.current.scrollIntoView({ behavior: 'smooth' });
       })
     })
   }
 
+  const [text, setText] = useState("");
 
   useEffect(() => {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-  
+
   return (<>
     <div>
       <div>
@@ -222,8 +233,14 @@ function ChatRoom() {
 
 
         <form className='formMSG' onSubmit={sendMessage}>
-          <input className='formMSGinput' value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Message text..." required />
-          <button className='Hbtn snd formMSGbutton' type="submit" disabled={!formValue}><Icon.Send /></button>
+          <InputEmoji
+            onEnter={sendMessage}
+            value={text}
+            onChange={setText}
+            cleanOnEnter
+            placeholder="Type a message"
+          />
+          <button className='Hbtn snd formMSGbutton' disabled={!text} type="submit"><Icon.Send /></button>
           <input type="file" accept="image/*" id="upload" hidden onChange={uploadImage} />
           <label className='Hbtn upl formMSGbutton' htmlFor="upload"><Icon.Upload /></label>
         </form>
@@ -332,6 +349,69 @@ function PakeistiPokalbi(draugoId) {
   else {
     pokalbis = draugoId + "messages" + auth.currentUser.uid;
   }
+}
+
+
+//-----------------------------------------------------------------------Profilis
+//Profilio langas
+function ProfileEdit(props) {
+  const [formValue, setFormValue] = useState('');
+  const ChangeName = (e) => {
+    e.preventDefault();
+    updateProfile(auth.currentUser, {
+      displayName: formValue
+    });
+    setFormValue('');
+    props.handleClick('ChatRoom');
+  }
+  const ChangePicture = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = storage.ref(`profileImages/${file.name}`);
+    const task = storageRef.put(file);
+    await task.then(() => {
+      storageRef.getDownloadURL().then(url => {
+        updateProfile(auth.currentUser, {
+          photoURL: url
+        });
+      })
+      props.handleClick('ChatRoom')
+    }
+    )
+  }
+  return (
+    <div className='ProfileBox'>
+      <div className='ProfileBox-img'>
+        <img alt=':(' className='Profile-img' src={auth.currentUser.photoURL ? auth.currentUser.photoURL : "https://icon-library.com/images/anonymous-icon/anonymous-icon-0.jpg"} />
+      </div>
+      <div className='ProfileBox-info'>
+        <div className='ProfileBox-info-name'>
+          <b>{auth.currentUser.displayName ? auth.currentUser.displayName : "UserWithoutName"}</b>
+        </div>
+        <div className='ProfileBox-info-email'>
+          <b>{auth.currentUser.email}</b>
+        </div>
+      </div>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <form onSubmit={ChangeName}>
+        Set your name: <br></br><br></br>
+        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder={auth.currentUser.displayName} required />
+        <button type="submit" disabled={!formValue}>Submit</button>
+      </form>
+      <form>
+        <br></br>
+        <br></br>
+        <br></br>
+        Set your profile image: <br></br><br></br>
+        <input type="file" accept="image/*" id="upload" hidden onChange={ChangePicture} />
+        <label className='Hbtn upl formMSGbutton' htmlFor="upload"><Icon.Upload /></label>
+      </form>
+    </div>
+  );
+
 }
 
 

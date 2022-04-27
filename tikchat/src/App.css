@@ -1,3 +1,4 @@
+
 html * {
   font-family: Sans-serif !important;
 }
@@ -45,7 +46,8 @@ body {
   box-sizing: border-box;
   text-align: center;
 }
-.App section {
+
+.Appsection {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -53,6 +55,7 @@ body {
   width: 100vw;
   background-color: #6EBF8B;
 }
+
 .main-chat {
   padding: 0vh;
   margin: 10vh 0 7vh;
@@ -406,4 +409,51 @@ label{
   white-space: -o-pre-wrap;   /* Opera 7 */    
   word-wrap: break-word;      /* IE */
   overflow-wrap: break-word;
+}
+
+.ProfileEdditButton{
+  position: absolute;
+  right: 10px;
+  top: 11vh;
+
+  font-size: 1em;
+  cursor: pointer;
+  outline: 0;
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  user-select: none;
+ /* supported by Chrome and Opera */
+  -webkit-user-select: none;
+ /* Safari */
+  -khtml-user-select: none;
+ /* Konqueror HTML */
+  -moz-user-select: none;
+ /* Firefox */
+  -ms-user-select: none;
+ /* Internet Explorer/Edge */
+}
+
+.EmojiPickertrue{
+  all: unset;
+  visibility: visible;
+  position: absolute;
+  right: 25px;
+  bottom: 60px;
+  background-color: white;
+}
+
+.EmojiPickerfalse{
+  position: absolute;
+  visibility: hidden;
+  height: 0px;
+  width: 0px;
 }
