@@ -65,22 +65,31 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div>
+        <div class="topnav">
           {user ? (() => {
             switch (screen) {
               case 'ChatRoom':
-                return <><button className='Hbtn fr' onClick={() => { handleClick('Friends') }}>Friends <Icon.PeopleFill /></button>   Chat room
-                  <button className='ProfileEdditButton' onClick={() => { handleClick('EditProfile') }} ><Icon.PersonBadgeFill /></button> </>;
+                return <>
+                <button className='Hbtn' onClick={() => { handleClick('Friends') }}>Friends <Icon.PeopleFill /></button>
+                <button className='Hbtn' onClick={() => { handleClick('EditProfile') }} >Profile<Icon.PersonBadgeFill /></button>
+                <SignOut />
+                </>;
               case 'Friends':
-                return <><button className='Hbtn fr' onClick={() => { handleClick('ChatRoom') }}>Back <Icon.ArrowReturnLeft /></button>   Friends
-                  <button className='ProfileEdditButton' onClick={() => { handleClick('EditProfile') }} ><Icon.PersonBadgeFill /></button> </>
+                return <>
+                <button className='Hbtn' onClick={() => { handleClick('ChatRoom') }}>Back <Icon.ArrowReturnLeft /></button>
+                <button className='Hbtn' onClick={() => { handleClick('EditProfile') }} >Profile<Icon.PersonBadgeFill /></button> 
+                <SignOut />
+                </>
               case 'EditProfile':
-                return <><button className='Hbtn fr' onClick={() => { handleClick('ChatRoom') }}>Back <Icon.ArrowReturnLeft /></button>   Edit profile </>
+                return <>
+                <button className='Hbtn' onClick={() => { handleClick('ChatRoom') }}>Back <Icon.ArrowReturnLeft /></button>
+                <button className='Hbtn' onClick={() => { handleClick('Friends') }}>Friends <Icon.PeopleFill /></button>
+                <SignOut />
+                </>
               default:
                 return null
             }
-          })() : '  Sign in  '}
-          <SignOut />
+          })() : null}
         </div>
       </header>
       <section className='Appsection'>
@@ -152,7 +161,7 @@ function SignIn() {
 //Atsijungimo mygtukas
 function SignOut() {
   return auth.currentUser && (
-    <button className='Hbtn out' onClick={() => auth.signOut()}>Sign Out <Icon.BoxArrowRight /></button>
+    <button className='Hbtn' onClick={() => auth.signOut()}>Sign Out <Icon.BoxArrowRight /></button>
   )
 }
 
@@ -233,16 +242,20 @@ function ChatRoom() {
 
 
         <form className='formMSG' onSubmit={sendMessage}>
+          <div className='formMSGinput'>
           <InputEmoji
+            height={10}
             onEnter={sendMessage}
             value={text}
             onChange={setText}
             cleanOnEnter
             placeholder="Type a message"
           />
-          <button className='Hbtn snd formMSGbutton' disabled={!text} type="submit"><Icon.Send /></button>
+          </div>
+          <div className='formMSGbuttons'>
           <input type="file" accept="image/*" id="upload" hidden onChange={uploadImage} />
           <label className='Hbtn upl formMSGbutton' htmlFor="upload"><Icon.Upload /></label>
+          </div>
         </form>
 
       </div>

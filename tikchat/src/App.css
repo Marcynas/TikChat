@@ -59,7 +59,7 @@ body {
 .main-chat {
   padding: 0vh;
   margin: 10vh 0 7vh;
-  margin-bottom: 40px;
+  margin-bottom: 120px;
 }
 /* ButtonsLogin */
 .Login-btn {
@@ -111,8 +111,8 @@ body {
 }
 /* ButtonsTop */
 .Hbtn {
-  width: 110px;
-  font-size: 1em;
+  width: 29vw;
+  font-size:calc(9px + 0.5vw);
   cursor: pointer;
   outline: 0;
   color: #fff;
@@ -136,6 +136,7 @@ body {
  /* Firefox */
   -ms-user-select: none;
  /* Internet Explorer/Edge */
+ margin-right: 1vw;
 }
 .Hbtn:hover {
   color: #fff;
@@ -244,11 +245,11 @@ p {
   border-style: solid;
 }
 .upl{
-  border-radius: 50%;
+  align-items: center;
+  border-radius: 20px;
   font-size: 1px;
-  display: inline-flex;
+  width: 25px;
   height: 25px;
-  width: 15px;
   border: white;
   border-style: solid;
 }
@@ -260,28 +261,24 @@ label{
 
 .formMSG {
   display: flex;
+  align-items: flex-end;
   position: fixed;
-  height: 40px;
+  height: 120px;
   bottom: 10px;
   font-size: 1.5rem;
   width: 100%;
 }
-.formMSGbutton {
-  margin-left: 5px;
-  margin-right: 10px;
-}
 .formMSGinput {
-  line-height: 1.5;
-  width: 95%;
-  font-size: 1.5rem;
-  background: rgb(58, 58, 58);
-  color: white;
-  border: white;
-  border-style: solid;
-  border-radius: 100px;
-  padding: 0 10px;
-  margin-left: 10px;
+  display: flex;
+  align-items: flex-end;
+  width: 80vw;
+  height: 100%;
 }
+.formMSGbuttons {
+  padding-bottom: 0.25em;
+  width: 20vw;
+}
+
 /* FriendList */
 .FriendBoxBox{
   position: fixed;
