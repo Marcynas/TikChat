@@ -1,27 +1,20 @@
 # TikChat
-Virtualaus bendravimo platforma.
+Chat PWA
 
-Mūsų pagrindiniai išsikelti tikslai yra:
-- Palaikymas skirtingose platformose
-- Web aplikacijoj galima susirašinėti su kitais vartotojais susikuriant paskyrą arba išlaikant anonimiškumą. 
-- Susiršinėjant galima siųsti ne tik tekstines žinutes, bet ir vaizdines.
-- Bendrauti asmeniškai
-- Draugų sąrašas
-- Profilio redagavimas
+## Set goals:
+- 📱 Cross-platform support
+- 💬 Ability to chat anonymously. 
+- 🖼 Send images.
+- 🕵️ Private messages. 
+- 🫂 Friend list.
+- ❗ Profile editing.
 
-Iš grafinio dizaino pusės, tikslas padaryti programėlės aplinką kiek įmanoma šiuolaikiškesnę ir intuityvesnę.
+From the graphic design side, the goal is to make the app's environment as modern and intuitive as possible.
 
-## Sukurti features
+### Need to fix:
+- Emoji button
 
-- Skirtingi prisijungimo būdai
-- Bendras pokalbių langas
-- Draugai
-- Images ir nuoruodų siuntimas
-- Atitinka PWA reikalavimus
-- Auto generuojamos profilio nuotraukos ir vardai
-- Nepatogus Emoji mygtukas
-
-## Realizuota naudojant:
+## Developed using:
 - ReactJS
 - Firebase
 - Vercel
