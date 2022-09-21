@@ -15,6 +15,6 @@ From the graphic design side, the goal is to make the app's environment as moder
 - Emoji button
 
 ## Developed using:
-- ReactJS
-- Firebase
-- Vercel
+- ![Firebase](https://img.shields.io/badge/Firebase-FFCA28.svg?style=for-the-badge&logo=Firebase&logoColor=black)
+- ![Vercel](https://img.shields.io/badge/Vercel-000000.svg?style=for-the-badge&logo=Vercel&logoColor=white)
+- ![ReactJs](https://img.shields.io/badge/React-61DAFB.svg?style=for-the-badge&logo=React&logoColor=black)
